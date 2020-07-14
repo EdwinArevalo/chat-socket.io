@@ -26,6 +26,11 @@ io.on('connection', (socket)=> {
     user.show(function(data){
         socket.emit('listar',data);
     });
+    socket.on('actualizar',(data)=>{
+        user.update(data, (rpta)=>{
+            io.emit('nuevo',rpta);
+        });
+    });
 });
 
 http.listen(app.get('port'), ()=> {

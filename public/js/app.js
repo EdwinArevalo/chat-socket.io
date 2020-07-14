@@ -19,7 +19,11 @@ $(document).ready(function(){
             $('#first_name').focus();
             return alert('Debe ingreasar su nombre!');
         }
-        socket.emit('crear', data);
+        // socket.emit('crear', data);
+        var accion = 'crear';
+        if($('.warning').length>0) accion = 'actualizar';
+        $('.warning').removeClass('warning');
+        socket.emit(accion,data);
         $('#formulario').trigger('reset');
         return true; 
 
@@ -37,17 +41,38 @@ $(document).ready(function(){
     //<td>
 
     const fill = (data) => {
-        let $row = $('<tr id="'+data._id+'">');
-        $row.append('<td>'+data._id+'</td>');
-        $row.append('<td>'+data.first_name+'</td>');
-        $row.append('<td>'+data.last_name+'</td>');
-        $row.append('<td>'+data.timezone+'</td>');
-        $row.append('<td>'+data.locale+'</td>');
-        $row.append('<td>'+data.profile_pic+'</td>');
-        $row.append('<td><buttton class="btn btn-success btn-sm" name="btnAct">Actualizar</buttton></td>');
-        $row.append('<td><buttton class="btn btn-danger btn-sm" name="btnEli">Eliminar</buttton></td>');
-        $row.data('data',data);
-        $('table tbody').append($row);
-    }
+        if($('#'+data._id).length==0){
+            let $row = $('<tr id="'+data._id+'">');
+            $row.append('<td>'+data._id+'</td>');
+            $row.append('<td>'+data.first_name+'</td>');
+            $row.append('<td>'+data.last_name+'</td>');
+            $row.append('<td>'+data.timezone+'</td>');
+            $row.append('<td>'+data.locale+'</td>');
+            $row.append('<td>'+data.profile_pic+'</td>');
+            $row.append('<td><buttton class="btn btn-success btn-sm" name="btnAct">Actualizar</buttton></td>');
+            $row.append('<td><buttton class="btn btn-danger btn-sm" name="btnEli">Eliminar</buttton></td>');
+            $row.data('data',data);
+            $row.find('[name=btnAct]').click(function(){
+                    let data = $(this).closest('tr').data('data');
+                    $('#_id').val(data._id);
+                    $('#first_name').val(data.first_name);
+                    $('#last_name').val(data.last_name);
+                    $('#timezone').val(data.timezone);
+                    $('#locale').val(data.locale);
+                    $('#profile_pic').val(data.profile_pic);
+                    $('.warning').removeClass('warning');
+                    $(this).closest('tr').addClass('warning');
+            });
+            $('table tbody').append($row);
+        }else{
+            let $row = $('#'+data._id);
+            $row.find('td:eq(1)').html(data.first_name);
+            $row.find('td:eq(2)').html(data.last_name);
+            $row.find('td:eq(3)').html(data.timezone);
+            $row.find('td:eq(4)').html(data.locale);
+            $row.find('td:eq(5)').html(data.profile_pic);
+        }
+        
+    };
 
 })

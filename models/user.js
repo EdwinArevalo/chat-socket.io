@@ -35,5 +35,16 @@ module.exports = {
                 return console.log(err);
             }
         });
-    } 
+    },
+    update: (data,callback) => {
+        userModel.findOne({_id: data._id}, (err,item)=>{
+            item.first_name = data.first_name;
+            item.last_name = data.last_name;
+            item.timezone = data.timezone;
+            item.locale = data.locale;
+            item.profile_pic = data.profile_pic;
+            item.save();
+            callback(item);
+        });
+    }  
 }
