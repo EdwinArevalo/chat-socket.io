@@ -26,5 +26,14 @@ module.exports = {
 
         let nuevo = new userModel(item).save();
         callback(item);
+    },
+    show: (callback)=>{
+        userModel.find({},(err,items) =>{
+            if(!err){
+                callback(JSON.stringify(items));
+            }else{
+                return console.log(err);
+            }
+        });
     } 
 }

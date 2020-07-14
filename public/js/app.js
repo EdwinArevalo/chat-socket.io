@@ -28,6 +28,12 @@ $(document).ready(function(){
         fill(data);
     });
 
+    socket.on('listar', (data)=>{
+        data = JSON.parse(data);
+        for(var i=0,j=data.length; i<j; i++){
+            fill(data[i]);
+        }
+    });
     //<td>
 
     const fill = (data) => {
