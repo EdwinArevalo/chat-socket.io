@@ -31,6 +31,11 @@ io.on('connection', (socket)=> {
             io.emit('nuevo',rpta);
         });
     });
+    socket.on('eliminar', (data)=>{
+        user.delete(data, (rpta)=>{
+            io.emit('borrado',rpta);
+        });
+    });
 });
 
 http.listen(app.get('port'), ()=> {

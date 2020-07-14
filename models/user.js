@@ -46,5 +46,11 @@ module.exports = {
             item.save();
             callback(item);
         });
+    },
+    delete: (_id,callback) =>{
+        userModel.findOne({_id: _id},(err,post)=>{
+            post.remove();
+            callback(_id);
+        });
     }  
 }

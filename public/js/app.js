@@ -38,6 +38,9 @@ $(document).ready(function(){
             fill(data[i]);
         }
     });
+    socket.on('borrado', (data)=>{
+        $('#'+data).remove();
+    });
     //<td>
 
     const fill = (data) => {
@@ -62,6 +65,12 @@ $(document).ready(function(){
                     $('#profile_pic').val(data.profile_pic);
                     $('.warning').removeClass('warning');
                     $(this).closest('tr').addClass('warning');
+            });
+            $row.find('[name=btnEli]').click(function(){
+                    let _id = $(this).closest('tr').attr('id');
+                    if(confirm('¿Desea continuar con la eliminación de este registro?')){
+                        socket.emit('eliminar',_id);
+                    }
             });
             $('table tbody').append($row);
         }else{
